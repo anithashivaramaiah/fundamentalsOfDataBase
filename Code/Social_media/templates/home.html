@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+                <h2>Manage <b>Talents </b> <button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Talents</button> </h2>
+                <p class="bottom float-right"> <a class="bottom" href="{{url_for('ehome')}}"> cancel</a></p>
+
+                {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+
+                        <span aria-hidden="true">x</span>
+
+                    </button>
+
+
+                {{message}}
+
+
+                </div>
+
+
+                {% endfor %}
+
+                {% endif %}
+                {% endwith %}
+
+
+                <table class="table table-hover table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Rank</th>
+                        <th>App Name</th>
+                        <th>Action</th>
+
+                    </tr>	
+
+
+                   {% for row in account %}
+                    <tr>
+                    
+                        <td>{{row.t_id}}</td>
+                        <td>{{row.first_name}}</td>
+                        <td>{{row.last_name}}</td>
+                        <td>{{row.rank}}</td>
+                        <td>{{row.app_name}}</td>
+                        <td>
+
+                        	<a href="/details/{{row.t_id}}" class="btn btn-primary btn-xs" onclick="return redirect(url_for('details'))">details</a>
+                            <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.t_id}}">Edit</a> 
+                      		<a href="/advertisment/{{row.t_id}}" class="btn btn-secondary btn-xs" onclick="return redirect(url_for('advertisment'))">Advertisment</a>
+                      		<a href="/dashboard/{{row.t_id}}" class="btn btn-primary btn-xs" onclick="return redirect(url_for('dashboard'))">dashboard</a>
+                            <a href="/delete/{{row.t_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                           
+                            
+                        </td>
+
+                    </tr>
+
+                  <!-- Modal Edit Employee-->
+
+<div id="modaledit{{row.t_id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Update Information</h4>
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form action="{{url_for('update')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>first Name:</label>
+                  <input type="hidden"  name="t_id" value="{{row.t_id}}">
+
+                  <input type="text" class="form-control" name="first_name" value="{{row.first_name}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Last Name:</label>
+
+                  <input type="text" class="form-control" name="last_name" value="{{row.last_name}}">
+
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Date of Birth:</label>
+
+                  <input type="text" class="form-control" name="DOB" value="{{row.dob}}">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>Application name:</label>
+
+                  <input type="text" class="form-control" name="app_name" value="{{row.app_name}}">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>Date of joining:</label>
+
+                  <input type="date" class="form-control" name="join_date" value="{{row.join_date}}">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>Rank:</label>
+
+                  <input type="text" class="form-control" name="ranking" value="{{row.ranking}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Email:</label>
+
+                  <input type="text" class="form-control" name="email" value="{{row.email}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Phone:</label>
+
+                  <input type="text" class="form-control" name="phone" value="{{row.phone}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Refered by:</label>
+
+                  <input type="text" class="form-control" name="ref_by" value="{{row.ref_by}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>salary:</label>
+
+                  <input type="text" class="form-control" name="salary" value="{{row.salary}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>street:</label>
+
+                  <input type="text" class="form-control" name="street" value="{{row.street}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Zip:</label>
+
+                  <input type="text" class="form-control" name="phone" value="{{row.zip}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <button class="btn btn-primary" type="submit">Update</button>
+
+               </div>
+
+            </form>
+
+         </div>
+
+         <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+         </div>
+
+      </div>
+
+   </div>
+
+</div>               
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+
+
+                  <!-- Modal Add Employee-->
+
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h4 class="modal-title">Add Talent</h4>
+         </div>
+         <div class="modal-body">
+
+            <form action="{{url_for('insert')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>First_Name:</label>
+                  <input type="text" class="form-control" name="first_name" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>Last_Name:</label>
+                  <input type="text" class="form-control" name="last_name" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>dob:</label>
+                  <input type="date" class="form-control" name="dob" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>App_name:</label>
+  					<select id="app_name" name="app_name">
+   					 <option value="instagram">Instagram</option>
+   					 <option value="facebook">Facebook</option>
+    				<option value="twitter">Twitter</option>
+   					 <option value="roposo">Roposo</option>
+  					</select>
+  				
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>join-date:</label>
+                  <input type="date" class="form-control" name="join_date" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>ranking:</label>
+                  <input type="text" class="form-control" name="ranking" required="1">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>Email:</label>
+                  <input type="email" class="form-control" name="email" required="1">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>Phone:</label>
+                  <input type="number" class="form-control" name="phone" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Referred by:</label>
+                  <input type="text" class="form-control" name="ref_by" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Salary:</label>
+                  <input type="number" class="form-control" name="salary" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>street:</label>
+                  <input type="text" class="form-control" name="street" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>zip:</label>
+                  <input type="number" class="form-control" name="zip" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Add Talent</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

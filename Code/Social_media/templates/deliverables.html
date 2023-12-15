@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+                <h2>Deliverables details <button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Allot Deliverables </button> </h2> 
+                <p class="bottom float-right"> <a class="bottom" href="{{url_for('home')}}"> cancel</a></p> 
+
+                {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+
+                        <span aria-hidden="true">x</span>
+
+                    </button>
+
+                {{message}}
+
+                </div>
+
+                {% endfor %}
+
+                {% endif %}
+                {% endwith %}
+
+                <table class="table table-hover table-dark">
+
+                    <tr style="background-color:#33ACFF ">
+                        <th>ID</th>
+                        <th>App_id</th>
+                        <th>Rank</th>
+                        <th>Status</th>
+                        <th>no_of_uploads</th>
+                        <th>to_be_uploaded</th>
+                        <th> start_date </th>
+                        <th> end_date </th>
+                        <th>Action</th>
+                      </tr>
+<br>
+                    {% for row in account %}
+                    <tr>
+                        
+                        <td>{{row.t_id}}</td>
+                        <td>{{row.app_id}}</td>
+                        <td>{{row.rank}}</td>
+                        <td>{{row.status}}</td>
+                        <td>{{row.no_of_uploads}}</td> 
+                        <td>{{row.to_be_uploaded}}</td>
+                        <td>{{row.start_date}}</td>
+                        <td>{{row.end_date}}</td>
+                        <td>
+                            <a href="/delupdate/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.t_id}}">Edit</a> 
+                            <a href="/deldelete/{{row.t_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                      </td>
+                    </tr>
+
+                 <!-- Modal Edit advertisement-->
+
+<div id="modaledit{{row.t_id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Update Information</h4>
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form action="{{url_for('addupdate')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>App_id:</label>
+                  <input type="hidden"  name="t_id" value="{{row.t_id}}">
+
+                  <input type="text" class="form-control" name="app_id" value="{{row.app_id}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>App_name:</label>
+                    <select id="app_name" name="app_name" value="{{row.app_name}}">
+                     <option value="instagram">Instagram</option>
+                     <option value="facebook">Facebook</option>
+                    <option value="twitter">Twitter</option>
+                     <option value="roposo">Roposo</option>
+                    </select>
+
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Brand_name:</label>
+
+                  <input type="text" class="form-control" name="brand_name" value="{{row.brand_name}}">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>Partnership:</label>
+
+                  <input type="text" class="form-control" name="partnership" value="{{row.partnership}}">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>Charges:</label>
+
+                  <input type="text" class="form-control" name="charges" value="{{row.charges}}">
+
+               </div>
+
+               <div class="form-group">
+
+                  <button class="btn btn-primary" type="submit">Update</button>
+
+               </div>
+
+            </form>
+
+         </div>
+
+         <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+         </div>
+
+      </div>
+
+   </div>
+
+</div>    
+
+                     {% endfor %}
+
+               </table>
+               </div>
+
+
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h4 class="modal-title">Add Promotions</h4>
+         </div>
+         <div class="modal-body">
+
+            <form action="{{url_for('promotions', t_id = t_id)}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>App_Id</label>
+                  <input type="text" class="form-control" name="app_id" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>App_name:</label>
+                    <select id="app_name" name="app_name">
+                     <option value="instagram">Instagram</option>
+                     <option value="facebook">Facebook</option>
+                    <option value="twitter">Twitter</option>
+                     <option value="roposo">Roposo</option>
+                    </select>
+
+               </div>
+
+               <div class="form-group">
+
+                  <label>Brand_name:</label>
+                  <input type="date" class="form-control" name="brand_name" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>partnership:</label>
+                  <input type="text" class="form-control" name="partnership" required="1">
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>charges:</label>
+                  <input type="text" class="form-control" name="charges" required="1">
+
+               </div>
+
+               <div class="form-group">
+
+                  <button class="btn btn-primary" type="submit">Add Promotions</button>
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+           </div>
+       </div>
+   </div>
+<br>
+
+
+{% endblock %}
+
+
+
+
